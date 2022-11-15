@@ -61,4 +61,19 @@ public class SpecificationFilter {
         };
     }
 
+    public static Specification<Customer> getSpecsFilterCustomer(String key) {
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (key != null && !key.isEmpty()) {
+                predicates.add(criteriaBuilder.or(
+                        criteriaBuilder.like(root.get("name"), "%" + key + "%"),
+                        criteriaBuilder.like(root.get("address"), "%" + key + "%"),
+                        criteriaBuilder.like(root.get("tel"), "%" + key + "%")));
+            }
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
+    }
+
 }

@@ -4,7 +4,9 @@ import com.example.carrental.model.Customer;
 import com.example.carrental.model.PageModel;
 import com.example.carrental.model.ResponseObject;
 import com.example.carrental.services.ICustomerService;
+import com.example.carrental.specs.SpecificationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +19,22 @@ public class CustomerController {
     @Autowired
     private ICustomerService iCustomerService;
 
+    @Autowired
+    private SpecificationFilter specificationFilter;
+
     @GetMapping("/search")
+    ResponseEntity<ResponseObject> searchAll(@RequestParam(value = "key") String key,
+                                             PageModel pageModel) {
+        Specification<Customer> specification = specificationFilter.getSpecsFilterCustomer(key);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok", "Get data successfully", iCustomerService.findAll(specification, pageModel))
+        );
+    }
+
+    @GetMapping("/searchByName")
     ResponseEntity<ResponseObject> searchByName(@RequestParam(value = "name") String name, PageModel pageModel) {
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok", "Get data successfully", iCustomerService.findByFullName(name, pageModel))
+                new ResponseObject("ok", "Get data successfully", iCustomerService.findByName(name, pageModel))
         );
     }
 

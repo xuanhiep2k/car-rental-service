@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +20,13 @@ public class CustomerServiceImpl implements ICustomerService {
     private CustomerRepository customerRepository;
 
     @Override
-    public Page<Customer> findByFullName(String name, PageModel pageModel) {
+    public Page<Customer> findAll(Specification<Customer> specification, PageModel pageModel) {
+        Sort sort = Sort.by(pageModel.getSortDirection(), pageModel.getSortBy());
+        Pageable pageable = PageRequest.of(pageModel.getPageNumber(), pageModel.getPageSize(), sort);
+        return customerRepository.findAll(specification, pageable);
+    }
+    @Override
+    public Page<Customer> findByName(String name, PageModel pageModel) {
         Sort sort = Sort.by(pageModel.getSortDirection(), pageModel.getSortBy());
         Pageable pageable = PageRequest.of(pageModel.getPageNumber(), pageModel.getPageSize(), sort);
         return customerRepository.findByFullName(name, pageable);

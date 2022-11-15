@@ -3,12 +3,14 @@ package com.example.carrental.services;
 import com.example.carrental.model.PageModel;
 import com.example.carrental.model.Customer;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface ICustomerService {
-    Page<Customer> findByFullName(String name,PageModel pageModel);
+    Page<Customer> findAll(Specification<Customer> specification, PageModel pageModel);
+
+    Page<Customer> findByName(String name, PageModel pageModel);
 
     Customer save(Customer customer);
 
