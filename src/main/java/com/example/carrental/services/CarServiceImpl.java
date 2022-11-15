@@ -32,8 +32,10 @@ public class CarServiceImpl implements ICarService {
     }
 
     @Override
-    public List<Car> findByName(String name) {
-        return carRepository.findByName(name);
+    public Page<Car> findByName(String name, PageModel pageModel) {
+        Sort sort = Sort.by(pageModel.getSortDirection(), pageModel.getSortBy());
+        Pageable pageable = PageRequest.of(pageModel.getPageNumber(), pageModel.getPageSize(), sort);
+        return carRepository.findByName(name, pageable);
     }
 
     @Override

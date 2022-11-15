@@ -1,6 +1,7 @@
 package com.example.carrental.controller;
 
 import com.example.carrental.model.Customer;
+import com.example.carrental.model.PageModel;
 import com.example.carrental.model.ResponseObject;
 import com.example.carrental.services.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,9 @@ public class CustomerController {
     private ICustomerService iCustomerService;
 
     @GetMapping("/search")
-    ResponseEntity<ResponseObject> searchByName(@RequestParam(value = "name") String name) {
+    ResponseEntity<ResponseObject> searchByName(@RequestParam(value = "name") String name, PageModel pageModel) {
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok", "Get data successfully", iCustomerService.findByFullName(name))
+                new ResponseObject("ok", "Get data successfully", iCustomerService.findByFullName(name, pageModel))
         );
     }
 
@@ -31,9 +32,9 @@ public class CustomerController {
     }
 
     @GetMapping("/getAllCustomers")
-    ResponseEntity<ResponseObject> getAllCustomers() {
+    ResponseEntity<ResponseObject> getAllCustomers(PageModel pageModel) {
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok", "Get data successfully", iCustomerService.getAllCustomers())
+                new ResponseObject("ok", "Get data successfully", iCustomerService.findAll(pageModel))
         );
     }
 

@@ -1,8 +1,13 @@
 package com.example.carrental.services;
 
 import com.example.carrental.model.Customer;
+import com.example.carrental.model.PageModel;
 import com.example.carrental.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +19,10 @@ public class CustomerServiceImpl implements ICustomerService {
     private CustomerRepository customerRepository;
 
     @Override
-    public List<Customer> findByFullName(String name) {
-        return customerRepository.findByFullName(name);
+    public Page<Customer> findByFullName(String name, PageModel pageModel) {
+        Sort sort = Sort.by(pageModel.getSortDirection(), pageModel.getSortBy());
+        Pageable pageable = PageRequest.of(pageModel.getPageNumber(), pageModel.getPageSize(), sort);
+        return customerRepository.findByFullName(name, pageable);
     }
 
     @Override
@@ -29,8 +36,10 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    public List<Customer> getAllCustomers() {
-        return customerRepository.findAll();
+    public Page<Customer> findAll(PageModel pageModel) {
+        Sort sort = Sort.by(pageModel.getSortDirection(), pageModel.getSortBy());
+        Pageable pageable = PageRequest.of(pageModel.getPageNumber(), pageModel.getPageSize(), sort);
+        return customerRepository.findAll(pageable);
     }
 
     @Override

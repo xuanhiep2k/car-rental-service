@@ -14,7 +14,7 @@ public interface ICarService {
 
     Page<Car> findAll(PageModel pageModel);
 
-    List<Car> findByName(String name);
+    Page<Car> findByName(String name,PageModel pageModel);
 
     Car save(Car car);
 

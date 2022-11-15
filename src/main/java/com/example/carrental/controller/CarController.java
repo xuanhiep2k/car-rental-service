@@ -31,9 +31,9 @@ public class CarController {
     }
 
     @GetMapping("/searchCarByName")
-    ResponseEntity<ResponseObject> searchCarByName(@RequestParam(value = "name") String name) {
+    ResponseEntity<ResponseObject> searchCarByName(@RequestParam(value = "name") String name, PageModel pageModel) {
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok", "Get successfully", iCarService.findByName(name))
+                new ResponseObject("ok", "Get successfully", iCarService.findByName(name, pageModel))
         );
     }
 
